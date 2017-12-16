@@ -86,7 +86,11 @@ resource "azurerm_network_interface" "this_env" {
     subnet_id                     = "${azurerm_subnet.this_env.id}"
     private_ip_address_allocation = "static"
 
-    # +4 to avoid PrivateIPAddressInReservedRange error
+    # from <https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq>
+    # > Azure reserves some IP addresses within each subnet. The first and last IP addresses of the subnets are reserved for protocol conformance, along with 3 more addresses used for Azure services.
+    # furthermore <https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-ip-addresses-overview-arm#private-ip-addresses>
+    # > Azure reserves the first four addresses in each subnet address range
+    # so add 4 to avoid `PrivateIPAddressInReservedRange` error
     private_ip_address = "${cidrhost(null_resource.subnets.triggers.fe_cidr, 4+count.index)}"
   }
 
