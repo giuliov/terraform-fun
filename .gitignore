@@ -11,3 +11,5 @@
 terraform.tfvars
 secrets.tf
 
+# generated stuff
+zipping/DSC.zip
