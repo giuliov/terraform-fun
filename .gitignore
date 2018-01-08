@@ -8,6 +8,7 @@
 .terraform/
 
 # password etc
+terraform.tfvars
 secrets.tf
 terraform.tfvars
 
