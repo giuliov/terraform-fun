@@ -62,5 +62,33 @@ resource "azurerm_network_security_rule" "vm_demo_any_out" {
   network_security_group_name = "${azurerm_network_security_group.vm_demo.name}"
 }
 
+resource "azurerm_network_security_rule" "vm_demo_webdeploy_in" {
+  name                        = "${var.env_name}-webdeploy-in"
+  priority                    = "240"
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "8172"
+  source_address_prefix       = "${var.admin_client_ip}"
+  destination_address_prefix  = "${azurerm_subnet.vm_demo.address_prefix}"
+  resource_group_name         = "${azurerm_resource_group.vm_demo.name}"
+  network_security_group_name = "${azurerm_network_security_group.vm_demo.name}"
+}
+
+resource "azurerm_network_security_rule" "vm_demo_winrm_in" {
+  name                        = "${var.env_name}-winrm-in"
+  priority                    = "250"
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "5985-5986"
+  source_address_prefix       = "${var.admin_client_ip}"
+  destination_address_prefix  = "${azurerm_subnet.vm_demo.address_prefix}"
+  resource_group_name         = "${azurerm_resource_group.vm_demo.name}"
+  network_security_group_name = "${azurerm_network_security_group.vm_demo.name}"
+}
+
 # EOF #
 

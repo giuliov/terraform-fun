@@ -2,10 +2,12 @@ configuration DSCWebServerConfig
 { 
     param (
         [string] $IISWebSite,
-        [string] $FQDNs
+        [string] $FQDNs # comma separated list of FQDNs
     )
     
-    Import-DscResource -ModuleName DSC_ColinsALMCorner.com
+    Import-DscResource -ModuleName DSC_ColinsALMCorner.com, GraniResource
+
+    $WebPiCmdPath = "${env:ProgramFiles}\Microsoft\Web Platform Installer\WebPiCmd-x64.exe"
 
     node "localhost"
     { 
@@ -44,6 +46,26 @@ configuration DSCWebServerConfig
                 $binding = Get-WebBinding -Name $IISWebSite -Port $port -Protocol 'https'
                 return $binding -ne $null
             }
+        }
+
+        cWebPILauncher Installv5
+        {
+        }
+        <#
+        cWebPi WebDeploy
+        {
+            DependsOn = '[cWebPILauncher]Installv5'
+            Name = 'WDeploy'
+        }
+        #>
+        Package WebDeploy_Installation
+        {
+            Ensure = "Present"
+            DependsOn = "[cWebPILauncher]Installv5"
+            Name = "Microsoft Web Deploy 3.5"
+            Path = $WebPiCmdPath
+            ProductId = ''
+            Arguments = "/install /products:WDeploy /AcceptEula"
         }
     } 
 }
