@@ -14,5 +14,6 @@ output "vm_publicip" {
 }
 */
 
+
 # EOF
 

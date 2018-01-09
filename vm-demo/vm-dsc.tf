@@ -12,7 +12,7 @@ resource "azurerm_virtual_machine_extension" "vm_demo_dsc" {
   type_handler_version       = "2.73"
   auto_upgrade_minor_version = true
 
-#${azurerm_storage_blob.vm_demodsc_package.url}
+  #${azurerm_storage_blob.vm_demodsc_package.url}
   settings = <<SETTINGS
     {
         "configuration": {

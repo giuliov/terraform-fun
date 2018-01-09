@@ -2,6 +2,13 @@
 
 terraform {
   required_version = ">= 0.11.1"
+
+  backend "azurerm" {
+    resource_group_name  = "pro-demo"
+    storage_account_name = "terraformfun"
+    container_name       = "terraform-state"
+    key                  = "terraform.tfstate"
+  }
 }
 
 provider "azurerm" {
