@@ -3,6 +3,7 @@
 *.tfstate.backup
 *.tfstate.*.backup
 *.tfplan
+*.tfstate.lock.info
 
 # Module directory
 .terraform/
@@ -11,6 +12,7 @@
 terraform.tfvars
 secrets.tf
 terraform.tfvars
+Set-AzureRMSecrets.ps1
 
 # more temp stuff
 _plan.json
