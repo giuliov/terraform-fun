@@ -1,10 +1,5 @@
 ### VARIABLES
 
-variable "azurerm_subscription_id" {}
-variable "azurerm_client_id" {}
-variable "azurerm_client_secret" {}
-variable "azurerm_tenant_id" {}
-
 variable "admin_client_ip" {
   description = "Client IP of administrator"
 }
