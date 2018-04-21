@@ -29,26 +29,20 @@ resource "azurerm_virtual_machine" "vm_demo" {
 
   storage_image_reference {
     publisher = "MicrosoftWindowsServer"
+    offer     = "WindowsServer"
+    sku       = "2012-R2-Datacenter-smalldisk"
+    version   = "latest"
 
-    #offer     = "WindowsServer"
+    #sku       = "2016-Datacenter-smalldisk"
     #sku       = "2016-Datacenter-Server-Core-smalldisk"
-    offer = "WindowsServerSemiAnnual"
-
-    sku     = "Datacenter-Core-1709-smalldisk"
-    version = "latest"
+    #offer = "WindowsServerSemiAnnual"
+    #sku     = "Datacenter-Core-1709-smalldisk"
   }
 
   storage_os_disk {
     name          = "${var.env_name}-osdisk"
     caching       = "ReadWrite"
     create_option = "FromImage"
-  }
-
-  storage_data_disk {
-    name          = "${var.env_name}-datadisk"
-    create_option = "Empty"
-    lun           = 0
-    disk_size_gb  = "10"
   }
 
   os_profile {

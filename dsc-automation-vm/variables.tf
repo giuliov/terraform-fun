@@ -26,5 +26,15 @@ variable "vm_admin_password" {
   description = "Password for the Administrator account"
 }
 
+variable "vsts_account" {}
+
+variable "vsts_access_token" {}
+
+variable "vstsagent_username" {
+  default = "vstsdeployer"
+}
+
+variable "vstsagent_password" {}
+
 # EOF #
 
