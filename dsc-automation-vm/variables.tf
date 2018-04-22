@@ -1,9 +1,5 @@
 ### VARIABLES
 
-variable "admin_client_ip" {
-  description = "Client IP of administrator"
-}
-
 variable "env_name" {
   description = "Name of Environment"
   default     = "tf-demo"
@@ -11,10 +7,6 @@ variable "env_name" {
 
 variable "resource_group_location" {
   default = "westeurope"
-}
-
-variable "dns_domain" {
-  description = "DNS domain"
 }
 
 variable "vm_admin_username" {
