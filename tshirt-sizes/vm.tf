@@ -1,23 +1,31 @@
-### Front-End Research VM
+### No-purpose VM
 
 locals {
-  vm_demo-managed_disk-storage_account_type = {
-    S = "Standard_LRS"
-    M = "Standard_LRS"
-    L = "Premium_LRS"
+  tshirt_index = {
+    S = 0
+    M = 1
+    L = 2
   }
 
-  vm_demo-managed_disk-disk_size_gb = {
-    S = "5"
-    M = "20"
-    L = "100"
-  }
+  tshirt_size = "${ local.tshirt_index[var.tshirt_size] }"
 
-  vm_demo-virtual_machine-vm_size = {
-    S = "Standard_B1s"
-    M = "Standard_B4sm"
-    L = "Standard_DS11_v2"
-  }
+  tshirt_values = [
+    {
+      storage_account_type = "Standard_LRS"
+      disk_size_gb         = 5
+      vm_size              = "Standard_B1s"
+    },
+    {
+      storage_account_type = "Standard_LRS"
+      disk_size_gb         = 20
+      vm_size              = "Standard_B4sm"
+    },
+    {
+      storage_account_type = "Premium_LRS"
+      disk_size_gb         = 100
+      vm_size              = "Standard_DS11_v2"
+    },
+  ]
 }
 
 resource "azurerm_network_interface" "vm_demo" {
@@ -37,12 +45,16 @@ resource "azurerm_network_interface" "vm_demo" {
 }
 
 resource "azurerm_managed_disk" "vm_demo" {
-  name                 = "${var.env_name}-datadisk"
-  location             = "${azurerm_resource_group.vm_demo.location}"
-  resource_group_name  = "${azurerm_resource_group.vm_demo.name}"
-  storage_account_type = "${ lookup(local.vm_demo-managed_disk-storage_account_type, var.tshirt_size) }"
+  name                = "${var.env_name}-datadisk"
+  location            = "${azurerm_resource_group.vm_demo.location}"
+  resource_group_name = "${azurerm_resource_group.vm_demo.name}"
+
+  #storage_account_type = "${ lookup(local.vm_demo-managed_disk-storage_account_type, var.tshirt_size) }"
+  storage_account_type = "${ lookup(local.tshirt_values[ local.tshirt_size ], "storage_account_type") }"
   create_option        = "Empty"
-  disk_size_gb         = "${ lookup(local.vm_demo-managed_disk-disk_size_gb, var.tshirt_size) }"
+
+  #disk_size_gb         = "${ lookup(local.vm_demo-managed_disk-disk_size_gb, var.tshirt_size) }"
+  disk_size_gb = "${ lookup(local.tshirt_values[ local.tshirt_size ], "disk_size_gb") }"
 
   tags {
     environment = "${var.env_name}"
@@ -50,11 +62,13 @@ resource "azurerm_managed_disk" "vm_demo" {
 }
 
 resource "azurerm_virtual_machine" "vm_demo" {
-  name                             = "${var.env_name}-vm"
-  location                         = "${azurerm_resource_group.vm_demo.location}"
-  resource_group_name              = "${azurerm_resource_group.vm_demo.name}"
-  network_interface_ids            = ["${azurerm_network_interface.vm_demo.id}"]
-  vm_size                          = "${ lookup(local.vm_demo-virtual_machine-vm_size, var.tshirt_size) }"
+  name                  = "${var.env_name}-vm"
+  location              = "${azurerm_resource_group.vm_demo.location}"
+  resource_group_name   = "${azurerm_resource_group.vm_demo.name}"
+  network_interface_ids = ["${azurerm_network_interface.vm_demo.id}"]
+
+  #vm_size                          = "${ lookup(local.vm_demo-virtual_machine-vm_size, var.tshirt_size) }"
+  vm_size                          = "${ lookup(local.tshirt_values[ local.tshirt_size ], "vm_size") }"
   delete_os_disk_on_termination    = true
   delete_data_disks_on_termination = true
 
