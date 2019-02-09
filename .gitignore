@@ -8,10 +8,10 @@
 .terraform/
 
 # password etc
-terraform.tfvars
-secrets.tf
-terraform.tfvars
+*.tfvars
 
 # more temp stuff
-_plan.json
+_plan.*
 *.zip
+terraform.exe
+

@@ -5,10 +5,6 @@ variable "azurerm_client_id" {}
 variable "azurerm_client_secret" {}
 variable "azurerm_tenant_id" {}
 
-variable "admin_client_ip" {
-  description = "Client IP of administrator"
-}
-
 variable "env_name" {
   description = "Name of Environment"
   default     = "tf-demo-ldna"
@@ -25,10 +21,6 @@ variable "dns_domain" {
 variable "vm_admin_username" {
   description = "Username for the Administrator account"
   default     = "fancyname"
-}
-
-variable "vm_admin_password" {
-  description = "Password for the Administrator account"
 }
 
 variable "scripts_resource_group_name" {

@@ -18,24 +18,25 @@ resource "azurerm_network_interface" "vm_demo" {
   }
 }
 
+data "azurerm_key_vault_secret" "vm_demo" {
+  name      = "vm-admin-password"
+  vault_uri = "https://giuliov-pro-demo.vault.azure.net/"
+}
+
 resource "azurerm_virtual_machine" "vm_demo" {
   name                             = "${var.env_name}-vm"
   location                         = "${azurerm_resource_group.vm_demo.location}"
   resource_group_name              = "${azurerm_resource_group.vm_demo.name}"
   network_interface_ids            = ["${azurerm_network_interface.vm_demo.id}"]
   vm_size                          = "Standard_B2s"
-  delete_os_disk_on_termination    = true
-  delete_data_disks_on_termination = true
+  delete_os_disk_on_termination    = true                                         # CAVEAT: this is ok for demoing, a VERY BAD idea otherwise
+  delete_data_disks_on_termination = true                                         # CAVEAT: this is ok for demoing, a VERY BAD idea otherwise
 
   storage_image_reference {
     publisher = "MicrosoftWindowsServer"
-
-    #offer     = "WindowsServer"
-    #sku       = "2016-Datacenter-Server-Core-smalldisk"
-    offer = "WindowsServerSemiAnnual"
-
-    sku     = "Datacenter-Core-1709-smalldisk"
-    version = "latest"
+    offer     = "WindowsServer"
+    sku       = "2019-Datacenter-smalldisk"
+    version   = "latest"
   }
 
   storage_os_disk {
@@ -54,7 +55,7 @@ resource "azurerm_virtual_machine" "vm_demo" {
   os_profile {
     computer_name  = "${upper( var.env_name )}VM"
     admin_username = "${var.vm_admin_username}"
-    admin_password = "${var.vm_admin_password}"
+    admin_password = "${data.azurerm_key_vault_secret.vm_demo.value}"
   }
 
   os_profile_windows_config {

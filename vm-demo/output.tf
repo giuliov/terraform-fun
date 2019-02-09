@@ -8,11 +8,9 @@ output "vm_internalip" {
   value = "${azurerm_network_interface.vm_demo.private_ip_address}"
 }
 
-/*
 output "vm_publicip" {
   value = "${azurerm_public_ip.vm_demo.ip_address}"
 }
-*/
 
 # EOF
 
