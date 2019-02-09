@@ -3,12 +3,15 @@
 *.tfstate.backup
 *.tfstate.*.backup
 *.tfplan
+*.tfstate.lock.info
 
 # Module directory
 .terraform/
 
 # password etc
 *.tfvars
+secrets.tf
+Set-AzureRMSecrets.ps1
 
 # more temp stuff
 _plan.*
