@@ -12,6 +12,5 @@ output "vm_publicip" {
   value = "${azurerm_public_ip.vm_demo.ip_address}"
 }
 
-
 # EOF
 
