@@ -7,20 +7,15 @@ resource "azurerm_network_interface" "appsvcint_demo" {
 
   ip_configuration {
     name                          = "ip-config"
-    subnet_id                     = "${azurerm_subnet.appsvcint_demo.id}"
+    subnet_id                     = "${azurerm_subnet.appsvcint_demo_db.id}"
     private_ip_address_allocation = "static"
-    private_ip_address            = "${ cidrhost(azurerm_subnet.appsvcint_demo.address_prefix, 5) }"
+    private_ip_address            = "${ cidrhost(azurerm_subnet.appsvcint_demo_db.address_prefix, 5) }"
     public_ip_address_id          = "${azurerm_public_ip.appsvcint_demo.id}"
   }
 
   tags {
     environment = "${var.env_name}"
   }
-}
-
-data "azurerm_key_vault_secret" "appsvcint_demo" {
-  name         = "vm-admin-password"
-  key_vault_id = "${data.azurerm_key_vault.giuliov_pro_demo.id}"
 }
 
 resource "azurerm_virtual_machine" "appsvcint_demo" {
@@ -48,11 +43,12 @@ resource "azurerm_virtual_machine" "appsvcint_demo" {
   os_profile {
     computer_name  = "terraform-sqldemo"
     admin_username = "${var.vm_admin_username}"
-    admin_password = "${data.azurerm_key_vault_secret.appsvcint_demo.value}"
+    admin_password = "${data.azurerm_key_vault_secret.appsvcint_demo_admin.value}"
 
-    custom_data = <<EOT
-    echo "Password.01" | /opt/mssql/bin/mssql-conf set-sa-password 
-  EOT
+    custom_data = <<EOF
+MSSQL_SA_PASSWORD="${data.azurerm_key_vault_secret.appsvcint_demo_sa.value}" /opt/mssql/bin/mssql-conf set-sa-password 
+systemctl start mssql-server
+EOF
   }
 
   os_profile_linux_config {

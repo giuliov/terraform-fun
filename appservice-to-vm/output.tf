@@ -1,15 +1,15 @@
 ### OUTPUTS
 
-output "vm_name" {
-  value = "${azurerm_virtual_machine.appsvcint_demo.name}"
+output "app_hostname" {
+  value = "${azurerm_app_service.appsvcint_demo.default_site_hostname}"
 }
 
-output "vm_internalip" {
-  value = "${azurerm_network_interface.appsvcint_demo.private_ip_address}"
+output "publish_username" {
+  value = "${azurerm_app_service.appsvcint_demo.site_credential.username}"
 }
 
-output "vm_publicip" {
-  value = "${azurerm_public_ip.appsvcint_demo.ip_address}"
+output "publish_password" {
+  value = "${azurerm_app_service.appsvcint_demo.site_credential.password}"
 }
 
 # EOF

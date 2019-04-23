@@ -19,6 +19,18 @@ provider "external" {
   version = "~> 1.0"
 }
 
+provider "null" {
+  version = "~> 2.1"
+}
+
+provider "template" {
+  version = "~> 2.1"
+}
+
+provider "random" {
+  version = "~> 2.1"
+}
+
 resource "azurerm_resource_group" "appsvcint_demo" {
   name     = "${var.env_name}"
   location = "${var.resource_group_location}"
