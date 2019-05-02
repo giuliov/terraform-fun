@@ -7,7 +7,7 @@ terraform {
     resource_group_name  = "pro-demo"
     storage_account_name = "terraformfun"
     container_name       = "terraform-state"
-    key                  = "vm-demo-terraform.tfstate"
+    key                  = "appservice-to-vm-terraform.tfstate"
   }
 }
 
@@ -19,7 +19,19 @@ provider "external" {
   version = "~> 1.0"
 }
 
-resource "azurerm_resource_group" "vm_demo" {
+provider "null" {
+  version = "~> 2.1"
+}
+
+provider "template" {
+  version = "~> 2.1"
+}
+
+provider "random" {
+  version = "~> 2.1"
+}
+
+resource "azurerm_resource_group" "appsvcint_demo" {
   name     = "${var.env_name}"
   location = "${var.resource_group_location}"
 
