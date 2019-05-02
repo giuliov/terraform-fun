@@ -41,3 +41,15 @@ resource "azurerm_app_service_plan" "appsvcint_demo" {
     size = "S1"
   }
 }
+
+resource "null_resource" "add_vnet_to_appservice" {
+  triggers = {
+    app_svc = "${azurerm_app_service.appsvcint_demo.id}"
+    gw      = "${azurerm_virtual_network_gateway.appsvcint_demo.id}"
+  }
+
+  provisioner "local-exec" {
+    command     = "./Update-VNetToAppService.ps1 -ResourceGroup '${azurerm_resource_group.appsvcint_demo.name}' -AppName '${azurerm_app_service.appsvcint_demo.name}' -ExistingVnetName '${azurerm_virtual_network.appsvcint_demo.name}'"
+    interpreter = ["PowerShell"]
+  }
+}

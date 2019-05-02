@@ -40,15 +40,14 @@ resource "azurerm_subnet" "appsvcint_demo_db" {
   resource_group_name  = "${azurerm_resource_group.appsvcint_demo.name}"
   virtual_network_name = "${azurerm_virtual_network.appsvcint_demo.name}"
   address_prefix       = "${ cidrsubnet(azurerm_virtual_network.appsvcint_demo.address_space.0, 8, 22) }"
-  service_endpoints    = ["Microsoft.Web"]
 }
 
 resource "azurerm_subnet" "appsvcint_demo_gw" {
+  # name must be GatewaySubnet
   name                 = "GatewaySubnet"
   resource_group_name  = "${azurerm_resource_group.appsvcint_demo.name}"
   virtual_network_name = "${azurerm_virtual_network.appsvcint_demo.name}"
   address_prefix       = "${ cidrsubnet(azurerm_virtual_network.appsvcint_demo.address_space.0, 8, 4) }"
-  service_endpoints    = ["Microsoft.Web"]
 }
 
 resource "azurerm_subnet_network_security_group_association" "appsvcint_demo_db" {
