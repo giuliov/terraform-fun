@@ -1,12 +1,6 @@
-locals {
-  # see https://winterdom.com/2017/08/01/aiarm, used to hook up Application Insights to the app service
-  linkToApplicationInsightsResource = {
-    "hidden-link:${azurerm_resource_group.appsvcint_demo.id}/providers/Microsoft.Web/sites/${azurerm_app_service.appsvcint_demo.name}" = "Resource"
-  }
-}
-
 resource "azurerm_app_service" "appsvcint_demo" {
-  name                = "${var.env_name}-appsvc"
+  count               = "${var.num_apps}"
+  name                = "${var.env_name}-${1+count.index}-appsvc"
   location            = "${azurerm_resource_group.appsvcint_demo.location}"
   resource_group_name = "${azurerm_resource_group.appsvcint_demo.name}"
   app_service_plan_id = "${azurerm_app_service_plan.appsvcint_demo.id}"
@@ -43,13 +37,15 @@ resource "azurerm_app_service_plan" "appsvcint_demo" {
 }
 
 resource "null_resource" "add_vnet_to_appservice" {
+  count = "${var.num_apps}"
+
   triggers = {
-    app_svc = "${azurerm_app_service.appsvcint_demo.id}"
+    app_svc = "${element(azurerm_app_service.appsvcint_demo.*.id, count.index)}"
     gw      = "${azurerm_virtual_network_gateway.appsvcint_demo.id}"
   }
 
   provisioner "local-exec" {
-    command     = "./Update-VNetToAppService.ps1 -ResourceGroup '${azurerm_resource_group.appsvcint_demo.name}' -AppName '${azurerm_app_service.appsvcint_demo.name}' -ExistingVnetName '${azurerm_virtual_network.appsvcint_demo.name}'"
+    command     = "./Update-VNetToAppService.ps1 -ResourceGroup '${azurerm_resource_group.appsvcint_demo.name}' -AppName '${element(azurerm_app_service.appsvcint_demo.*.name, count.index)}' -ExistingVnetName '${azurerm_virtual_network.appsvcint_demo.name}'"
     interpreter = ["PowerShell"]
   }
 }

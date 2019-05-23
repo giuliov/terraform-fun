@@ -19,5 +19,5 @@ resource "null_resource" "upload_sample_app" {
 */
 
 data "external" "upload_sample_app" {
-  program = ["powershell", "./upload-zip.ps1 -resourceGroupName ${azurerm_resource_group.appsvcint_demo.name} -appName ${azurerm_app_service.appsvcint_demo.name} -sourceDir './sample_app/'"]
+  program = ["powershell", "./upload-zip.ps1 -resourceGroupName '${azurerm_resource_group.appsvcint_demo.name}' -appName '${element(azurerm_app_service.appsvcint_demo.*.name, count.index)}' -sourceDir './sample_app/'"]
 }

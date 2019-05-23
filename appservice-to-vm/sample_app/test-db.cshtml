@@ -7,23 +7,25 @@ var scsb = new SqlConnectionStringBuilder(connString);
 string targetHost = scsb.DataSource;
 }
 
-<html> 
-<body> 
-<h1>Test DB connection</h1> 
+<html>
+<body>
+<h1>DB connection test v2</h1>
 
 <p>
-Connection string is @connString
+Target host is @targetHost<br/>
+Database target is @scsb.InitialCatalog
 </p>
 
 <p>
-Socket connection is
+Socket connection:
 @{
     try
     {
-        var tcpClient = new TcpClient();
-        tcpClient.Connect(targetHost,1433);
-        WriteLiteral("SUCCEEDED");
-        tcpClient.Close();
+        using (var tcpClient = new TcpClient())
+        {
+            tcpClient.Connect(targetHost,1433);
+            WriteLiteral("SUCCEEDED");
+        }
     }
     catch (SocketException sockEx)
     {
@@ -33,20 +35,23 @@ Socket connection is
 </p>
 
 <p>
-SQL Connection is
+SQL Connection:
 @{
     try
     {
-        using (SqlConnection sqlConn = new SqlConnection(connString))  
+        using (var sqlConn = new SqlConnection(connString))
         {
-            var sqlCmd = new SqlCommand("SELECT @@Version", sqlConn);  
-            sqlConn.Open();  
-
-            var dataReader= sqlCmd.ExecuteReader();  
-            if (dataReader.Read())  
+            using (var sqlCmd = new SqlCommand("SELECT @@Version", sqlConn))
             {
-                WriteLiteral( dataReader.GetString(0) );
-            }  
+                sqlConn.Open();
+                using (var dataReader= sqlCmd.ExecuteReader())
+                {
+                    if (dataReader.Read())
+                    {
+                        WriteLiteral( dataReader.GetString(0) );
+                    }
+                }
+            }
         }//using
     }
     catch (SqlException sqlEx)

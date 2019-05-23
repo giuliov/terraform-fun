@@ -14,6 +14,7 @@ param(
     $Destroy
 )
 
+Import-Module -Name Az
 
 function AddExistingVnet($subscriptionId, $resourceGroupName, $webAppName, $existingVnetName) {
     $ErrorActionPreference = "Stop";
@@ -56,7 +57,7 @@ function AddExistingVnet($subscriptionId, $resourceGroupName, $webAppName, $exis
 
     if (-not $certFound) {
         Write-Host "Adding certificate"
-        Add-AzureRmVpnClientRootCertificate -VpnClientRootCertificateName "AppServiceCertificate.cer" -PublicCertData $virtualNetwork.Properties.CertBlob -VirtualNetworkGatewayName $gateway.Name
+        Add-AzureRmVpnClientRootCertificate -ResourceGroupName $resourceGroupName -VpnClientRootCertificateName "AppServiceCertificate.cer" -PublicCertData $virtualNetwork.Properties.CertBlob -VirtualNetworkGatewayName $gateway.Name
     }
 
     # Now finish joining by getting the VPN package and giving it to the App
@@ -105,5 +106,5 @@ if ($destroy) {
     RemoveVnet $resourceGroup $appName $existingVnetName
 }
 else {
-    AddExistingVnet $azureProfile.Subscription $resourceGroup $appName $existingVnetName
+    AddExistingVnet $azureProfile.Context.Subscription.Id $resourceGroup $appName $existingVnetName
 }

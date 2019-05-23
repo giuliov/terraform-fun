@@ -1,12 +1,12 @@
 # terraform-fun
-Hacks, notes and experiments with HashiCorp Terraform 
+Hacks, notes and experiments with HashiCorp Terraform
 
 
 ## Samples
 
 - `hello-world`: Creates a Resource Group
 - `vm-demo`: Creates a Windows VM and configures IIS
-- `appservice-to-vm`: An App Services using an existing database in a VM
+- `appservice-to-vm`: An App Service using an existing database in a VM
 - `tshirt-sizes`: terraform 0.11 style for parametrizing from a table
 - `dsc-automation-vm`: use Azure Automation to install a VSTS Agent
 - `carving-subnets`: using `cidrsubnet` and `cidrhost` to statically assign IP addresses

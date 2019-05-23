@@ -9,6 +9,14 @@ variable "resource_group_location" {
   default = "westeurope"
 }
 
+variable "num_apps" {
+  default = 1
+}
+
+variable "cert_password" {
+  default = "Password.01"
+}
+
 variable "dns_domain" {
   description = "DNS domain"
 }
