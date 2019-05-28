@@ -18,3 +18,4 @@ _plan.*
 *.zip
 terraform.exe
 
+*.plan
