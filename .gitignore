@@ -12,10 +12,18 @@
 *.tfvars
 secrets.tf
 Set-AzureRMSecrets.ps1
+*.cert
+*.cer
+*.pem
+*.pfx
+
+# editor
+.vs/
+.vscode/
 
 # more temp stuff
 _plan.*
 *.zip
 terraform.exe
-
 *.plan
+*.log
