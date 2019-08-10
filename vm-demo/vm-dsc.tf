@@ -27,7 +27,7 @@ resource "azurerm_virtual_machine_extension" "vm_demo_dsc" {
     }
 SETTINGS
 
-  tags {
+  tags = {
     environment = "${var.env_name}"
   }
 }

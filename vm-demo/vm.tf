@@ -9,18 +9,23 @@ resource "azurerm_network_interface" "vm_demo" {
     name                          = "ip-config"
     subnet_id                     = "${azurerm_subnet.vm_demo.id}"
     private_ip_address_allocation = "static"
-    private_ip_address            = "${ cidrhost(azurerm_subnet.vm_demo.address_prefix, 5) }"
+    private_ip_address            = "${cidrhost(azurerm_subnet.vm_demo.address_prefix, 5)}"
     public_ip_address_id          = "${azurerm_public_ip.vm_demo.id}"
   }
 
-  tags {
+  tags = {
     environment = "${var.env_name}"
   }
 }
 
+data "azurerm_key_vault" "demo" {
+  name                = "giuliov-pro-demo"
+  resource_group_name = "pro-demo"
+}
+
 data "azurerm_key_vault_secret" "vm_demo" {
-  name      = "vm-admin-password"
-  vault_uri = "https://giuliov-pro-demo.vault.azure.net/"
+  name         = "vm-admin-password"
+  key_vault_id = data.azurerm_key_vault.demo.id
 }
 
 resource "azurerm_virtual_machine" "vm_demo" {
@@ -28,9 +33,9 @@ resource "azurerm_virtual_machine" "vm_demo" {
   location                         = "${azurerm_resource_group.vm_demo.location}"
   resource_group_name              = "${azurerm_resource_group.vm_demo.name}"
   network_interface_ids            = ["${azurerm_network_interface.vm_demo.id}"]
-  vm_size                          = "Standard_B2s"
-  delete_os_disk_on_termination    = true                                         # CAVEAT: this is ok for demoing, a VERY BAD idea otherwise
-  delete_data_disks_on_termination = true                                         # CAVEAT: this is ok for demoing, a VERY BAD idea otherwise
+  vm_size                          = var.vm_size
+  delete_os_disk_on_termination    = true # CAVEAT: this is ok for demoing, a VERY BAD idea otherwise
+  delete_data_disks_on_termination = true # CAVEAT: this is ok for demoing, a VERY BAD idea otherwise
 
   storage_image_reference {
     publisher = "MicrosoftWindowsServer"
@@ -63,7 +68,7 @@ resource "azurerm_virtual_machine" "vm_demo" {
     enable_automatic_upgrades = false
   }
 
-  tags {
+  tags = {
     environment = "${var.env_name}"
   }
 }

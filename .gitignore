@@ -14,7 +14,7 @@ secrets.tf
 Set-AzureRMSecrets.ps1
 
 # more temp stuff
-_plan.*
+_plan*
 *.zip
 terraform.exe
 

@@ -9,6 +9,11 @@ variable "resource_group_location" {
   default = "westeurope"
 }
 
+variable "vm_size" {
+  default = "Standard_B2s"
+}
+
+
 variable "dns_domain" {
   description = "DNS domain"
 }

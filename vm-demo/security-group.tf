@@ -2,7 +2,7 @@
 
 # Trick to guarantee that we can access the target VM
 data "external" "client_ip" {
-  program = ["PowerShell", "-Command", "(Invoke-WebRequest -Uri https://api.ipify.org/?format=json -UseBasicParsing).Content"]
+  program = ["curl", "https://api.ipify.org/?format=json"]
 }
 
 resource "azurerm_network_security_group" "vm_demo" {
