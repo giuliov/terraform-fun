@@ -12,9 +12,9 @@
 *.tfvars
 secrets.tf
 Set-AzureRMSecrets.ps1
+azure-vars.sh
 
 # more temp stuff
 _plan*
 *.zip
 terraform.exe
-

@@ -1,17 +1,10 @@
-locals {
-  # see https://winterdom.com/2017/08/01/aiarm, used to hook up Application Insights to the app service
-  linkToApplicationInsightsResource = {
-    "hidden-link:${azurerm_resource_group.appsvcint_demo.id}/providers/Microsoft.Web/sites/${azurerm_app_service.appsvcint_demo.name}" = "Resource"
-  }
-}
-
 resource "azurerm_app_service" "appsvcint_demo" {
   name                = "${var.env_name}-appsvc"
-  location            = "${azurerm_resource_group.appsvcint_demo.location}"
-  resource_group_name = "${azurerm_resource_group.appsvcint_demo.name}"
-  app_service_plan_id = "${azurerm_app_service_plan.appsvcint_demo.id}"
+  location            = azurerm_resource_group.appsvcint_demo.location
+  resource_group_name = azurerm_resource_group.appsvcint_demo.name
+  app_service_plan_id = azurerm_app_service_plan.appsvcint_demo.id
   enabled             = true
-  depends_on          = ["azurerm_virtual_network_gateway.appsvcint_demo"]
+  depends_on          = [azurerm_virtual_network_gateway.appsvcint_demo]
 
   site_config {
     dotnet_framework_version  = "v4.0"
@@ -19,7 +12,7 @@ resource "azurerm_app_service" "appsvcint_demo" {
     default_documents         = ["default.html", "index.html", "default.aspx"]
     php_version               = "5.6"
     use_32_bit_worker_process = true
-    virtual_network_name      = "${azurerm_virtual_network.appsvcint_demo.name}"
+    virtual_network_name      = azurerm_virtual_network.appsvcint_demo.name
   }
 
   connection_string {
@@ -31,25 +24,26 @@ resource "azurerm_app_service" "appsvcint_demo" {
 
 resource "azurerm_app_service_plan" "appsvcint_demo" {
   name                = "${var.env_name}-plan"
-  location            = "${azurerm_resource_group.appsvcint_demo.location}"
-  resource_group_name = "${azurerm_resource_group.appsvcint_demo.name}"
+  location            = azurerm_resource_group.appsvcint_demo.location
+  resource_group_name = azurerm_resource_group.appsvcint_demo.name
   kind                = "Windows"
   per_site_scaling    = false
 
   sku {
-    tier = "Standard"
+    tier = "Standard" # minimum required for VNet Integration
     size = "S1"
   }
 }
 
+/* TEMP: this script requires Az module
 resource "null_resource" "add_vnet_to_appservice" {
   triggers = {
-    app_svc = "${azurerm_app_service.appsvcint_demo.id}"
-    gw      = "${azurerm_virtual_network_gateway.appsvcint_demo.id}"
+    app_svc = azurerm_app_service.appsvcint_demo.id
+    gw      = azurerm_virtual_network_gateway.appsvcint_demo.id
   }
 
   provisioner "local-exec" {
-    command     = "./Update-VNetToAppService.ps1 -ResourceGroup '${azurerm_resource_group.appsvcint_demo.name}' -AppName '${azurerm_app_service.appsvcint_demo.name}' -ExistingVnetName '${azurerm_virtual_network.appsvcint_demo.name}'"
-    interpreter = ["PowerShell"]
+    command     = "${var.powershell} -File ./Update-VNetToAppService.ps1 -ResourceGroup '${azurerm_resource_group.appsvcint_demo.name}' -AppName '${azurerm_app_service.appsvcint_demo.name}' -ExistingVnetName '${azurerm_virtual_network.appsvcint_demo.name}'"
   }
 }
+*/

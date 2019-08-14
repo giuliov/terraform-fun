@@ -5,10 +5,11 @@ data "azurerm_key_vault" "giuliov_pro_demo" {
 
 data "azurerm_key_vault_secret" "appsvcint_demo_admin" {
   name         = "vm-admin-password"
-  key_vault_id = "${data.azurerm_key_vault.giuliov_pro_demo.id}"
+  key_vault_id = data.azurerm_key_vault.giuliov_pro_demo.id
 }
 
 data "azurerm_key_vault_secret" "appsvcint_demo_sa" {
   name         = "sa-password"
-  key_vault_id = "${data.azurerm_key_vault.giuliov_pro_demo.id}"
+  key_vault_id = data.azurerm_key_vault.giuliov_pro_demo.id
 }
+

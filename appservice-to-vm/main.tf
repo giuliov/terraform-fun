@@ -1,7 +1,7 @@
 ### MAIN
 
 terraform {
-  required_version = "~> 0.11.1"
+  required_version = "~> 0.12"
 
   backend "azurerm" {
     resource_group_name  = "pro-demo"
@@ -32,13 +32,12 @@ provider "random" {
 }
 
 resource "azurerm_resource_group" "appsvcint_demo" {
-  name     = "${var.env_name}"
-  location = "${var.resource_group_location}"
+  name     = "tf-demo-${var.env_name}"
+  location = var.resource_group_location
 
-  tags {
-    environment = "${var.env_name}"
+  tags = {
+    environment = var.env_name
   }
 }
 
 # EOF
-
