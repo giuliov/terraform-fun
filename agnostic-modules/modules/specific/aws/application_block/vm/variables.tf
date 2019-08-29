@@ -14,3 +14,11 @@ variable subnet_name {
 variable vm_name {
   type = string
 }
+
+variable vm_os_windows {
+  type = bool
+}
+
+variable vm_os_linux {
+  type = bool
+}
