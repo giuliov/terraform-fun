@@ -1,14 +1,14 @@
 locals {
 
   aws_geographies = {
-    "zuerich" = {
-      primary = "eu-west-1" #HACK should be eu-central-1
+    "ireland" = {
+      primary = "eu-west-1"
     }
   }
 
   azure_geographies = {
-    "zuerich" = {
-      primary = "switzerlandnorth"
+    "ireland" = {
+      primary = "northeurope"
     }
   }
 
@@ -48,7 +48,16 @@ locals {
   aws_vmimages = {
     "windows" = {
       "2019" = {
-        #TODO
+        name_regex  = "^.*Windows.*"
+        name_filter = "*Windows_Server-2019-English-Core-Base*"
+        owner       = "099720109477" # Canonical
+      }
+    }
+    "linux" = {
+      "ubuntu-18.04" = {
+        name_regex  = "^.*ubuntu.*"
+        name_filter = "*ubuntu*18.04-amd64-server-*"
+        owner       = "801119661308" # Amazon
       }
     }
   }
@@ -59,6 +68,14 @@ locals {
         publisher = "MicrosoftWindowsServer"
         offer     = "WindowsServer"
         sku       = "2019-Datacenter-smalldisk"
+        version   = "latest"
+      }
+    }
+    "linux" = {
+      "ubuntu-18.04" = {
+        publisher = "Canonical"
+        offer     = "UbuntuServer"
+        sku       = "18.04-LTS"
         version   = "latest"
       }
     }

@@ -14,13 +14,13 @@ data aws_subnet app_subnet {
   }
 }
 
-data aws_ami ubuntu {
+data aws_ami linux {
   most_recent = true
-  name_regex  = "^.*ubuntu.*"
+  name_regex  = var.vmimage_name_regex
 
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-*-18.04-amd64-server-*"]
+    values = [var.vmimage_name_filter]
   }
 
   filter {
@@ -28,16 +28,16 @@ data aws_ami ubuntu {
     values = ["hvm"]
   }
 
-  owners = ["099720109477"] # Canonical
+  owners = [var.vmimage_owner]
 }
 
 data aws_ami windows {
   most_recent = true
-  name_regex  = "^.*Windows.*"
+  name_regex  = var.vmimage_name_regex
 
   filter {
     name   = "name"
-    values = ["*Windows_Server-2019-English-Core-Base*"]
+    values = [var.vmimage_name_filter]
   }
 
   filter {
@@ -45,14 +45,14 @@ data aws_ami windows {
     values = ["hvm"]
   }
 
-  owners = ["801119661308"] # Amazon
+  owners = [var.vmimage_owner]
 }
 
 
 resource aws_instance vm {
   count = var.count_
 
-  ami                         = var.vm_os_windows ? data.aws_ami.windows.id : (var.vm_os_linux ? data.aws_ami.ubuntu.id : "ERROR: invalid OS")
+  ami                         = var.vm_os_windows ? data.aws_ami.windows.id : (var.vm_os_linux ? data.aws_ami.linux.id : "ERROR: invalid OS")
   instance_type               = "t2.micro"
   subnet_id                   = data.aws_subnet.app_subnet.id
   vpc_security_group_ids      = [] #TODO

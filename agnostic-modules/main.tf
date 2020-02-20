@@ -10,7 +10,7 @@ module application_123 {
 
   location = {
     cloud       = "aws"
-    geographies = ["zuerich"]
+    geographies = ["ireland"]
     section     = "app-group-gamma"
   }
 
@@ -18,8 +18,8 @@ module application_123 {
 
   platform = "vm"
   vm_platform = {
-    os         = "windows"
-    os_version = "2019"
+    os         = "linux"
+    os_version = "ubuntu-18.04"
   }
 
   tags = {

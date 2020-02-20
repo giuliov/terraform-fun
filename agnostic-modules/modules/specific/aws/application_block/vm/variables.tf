@@ -22,3 +22,16 @@ variable vm_os_windows {
 variable vm_os_linux {
   type = bool
 }
+
+variable vmimage_name_regex {
+  type = string
+}
+
+variable vmimage_name_filter {
+  type = string
+}
+
+variable vmimage_owner {
+  type = string
+}
+

@@ -4,7 +4,7 @@ terraform {
 
 locals {
   validate_arguments_platform    = (var.platform == "vm" && var.vm_platform != null) || (var.platform == "k8s" && var.k8s_platform != null) ? null : file("ERROR: Invalid platform argument.")
-  validate_arguments_vm_platform = var.vm_platform != null && var.vm_platform.os == "windows" ? null : file("ERROR: Invalid vm_platform argument.")
+  validate_arguments_vm_platform = var.vm_platform != null && var.vm_platform.os == "windows" ? null : (var.vm_platform.os == "linux" ? null : file("ERROR: Invalid vm_platform argument."))
   # etc. etc. etc.
 }
 
@@ -24,17 +24,21 @@ module aws {
   # HACK until we get full support
   count_ = var.location.cloud == "aws" && var.platform == "vm" ? 1 : 0
 
-  main_region   = local.aws_geographies[var.location.geographies[0]].primary
-  subnet_name   = local.aws_section.subnet_name
-  vm_name       = var.name
-  vm_os_windows = local.vm_os_windows
-  vm_os_linux   = local.vm_os_linux
+  main_region         = local.aws_geographies[var.location.geographies[0]].primary
+  subnet_name         = local.aws_section.subnet_name
+  vm_name             = var.name
+  vm_os_windows       = local.vm_os_windows
+  vm_os_linux         = local.vm_os_linux
+  vmimage_name_regex  = local.aws_vmimage.name_regex
+  vmimage_name_filter = local.aws_vmimage.name_filter
+  vmimage_owner       = local.aws_vmimage.owner
 }
 
 module azure {
   source = "../../specific/azure/application_block/vm"
   # HACK until we get full support
-  count_                              = var.location.cloud == "azure" && var.platform == "vm" ? 1 : 0
+  count_ = var.location.cloud == "azure" && var.platform == "vm" ? 1 : 0
+
   location                            = local.azure_geographies[var.location.geographies[0]].primary
   resource_group_name                 = local.azure_section.app_resource_group_name
   virtual_network_resource_group_name = local.azure_section.vnet_resource_group_name
@@ -47,5 +51,4 @@ module azure {
   vm_os_image_offer                   = local.azure_vmimage.offer
   vm_os_image_sku                     = local.azure_vmimage.sku
   vm_os_image_version                 = local.azure_vmimage.version
-
 }
