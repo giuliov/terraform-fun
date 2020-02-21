@@ -51,10 +51,10 @@ resource azurerm_virtual_machine vm {
   vm_size = "Standard_DS2_v2"
 
   storage_image_reference {
-    publisher = var.vm_os_image_publisher
-    offer     = var.vm_os_image_offer
-    sku       = var.vm_os_image_sku
-    version   = var.vm_os_image_version
+    publisher = var.vm_os_image_spec.publisher
+    offer     = var.vm_os_image_spec.offer
+    sku       = var.vm_os_image_spec.sku
+    version   = var.vm_os_image_spec.version
   }
 
   storage_os_disk {
@@ -62,6 +62,9 @@ resource azurerm_virtual_machine vm {
     caching       = "ReadWrite"
     create_option = "FromImage"
   }
+
+  # only for demoing!
+  delete_os_disk_on_termination = true
 
   os_profile {
     computer_name  = var.vm_os_windows ? substr(upper(var.vm_name), 0, 15) : var.vm_name

@@ -18,8 +18,10 @@ module application_123 {
 
   platform = "vm"
   vm_platform = {
-    os         = "linux"
-    os_version = "ubuntu-18.04"
+    #os         = "linux"
+    #os_version = "ubuntu-18.04"
+    os         = "windows"
+    os_version = "server-2019"
   }
 
   tags = {

@@ -15,12 +15,14 @@ data aws_subnet app_subnet {
 }
 
 data aws_ami linux {
+  count = var.count_
+
   most_recent = true
-  name_regex  = var.vmimage_name_regex
+  name_regex  = var.vm_os_image_spec.name_regex
 
   filter {
     name   = "name"
-    values = [var.vmimage_name_filter]
+    values = [var.vm_os_image_spec.name_filter]
   }
 
   filter {
@@ -28,16 +30,18 @@ data aws_ami linux {
     values = ["hvm"]
   }
 
-  owners = [var.vmimage_owner]
+  owners = [var.vm_os_image_spec.owner]
 }
 
 data aws_ami windows {
+  count = var.count_
+
   most_recent = true
-  name_regex  = var.vmimage_name_regex
+  name_regex  = var.vm_os_image_spec.name_regex
 
   filter {
     name   = "name"
-    values = [var.vmimage_name_filter]
+    values = [var.vm_os_image_spec.name_filter]
   }
 
   filter {
@@ -45,14 +49,14 @@ data aws_ami windows {
     values = ["hvm"]
   }
 
-  owners = [var.vmimage_owner]
+  owners = [var.vm_os_image_spec.owner]
 }
 
 
 resource aws_instance vm {
   count = var.count_
 
-  ami                         = var.vm_os_windows ? data.aws_ami.windows.id : (var.vm_os_linux ? data.aws_ami.linux.id : "ERROR: invalid OS")
+  ami                         = var.vm_os_windows ? data.aws_ami.windows[0].id : (var.vm_os_linux ? data.aws_ami.linux[0].id : "ERROR: invalid OS")
   instance_type               = "t2.micro"
   subnet_id                   = data.aws_subnet.app_subnet.id
   vpc_security_group_ids      = [] #TODO

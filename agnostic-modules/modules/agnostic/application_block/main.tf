@@ -24,14 +24,12 @@ module aws {
   # HACK until we get full support
   count_ = var.location.cloud == "aws" && var.platform == "vm" ? 1 : 0
 
-  main_region         = local.aws_geographies[var.location.geographies[0]].primary
-  subnet_name         = local.aws_section.subnet_name
-  vm_name             = var.name
-  vm_os_windows       = local.vm_os_windows
-  vm_os_linux         = local.vm_os_linux
-  vmimage_name_regex  = local.aws_vmimage.name_regex
-  vmimage_name_filter = local.aws_vmimage.name_filter
-  vmimage_owner       = local.aws_vmimage.owner
+  main_region      = local.aws_geographies[var.location.geographies[0]].primary
+  subnet_name      = local.aws_section.subnet_name
+  vm_name          = var.name
+  vm_os_windows    = local.vm_os_windows
+  vm_os_linux      = local.vm_os_linux
+  vm_os_image_spec = local.aws_vmimage
 }
 
 module azure {
@@ -47,8 +45,5 @@ module azure {
   vm_name                             = var.name
   vm_os_windows                       = local.vm_os_windows
   vm_os_linux                         = local.vm_os_linux
-  vm_os_image_publisher               = local.azure_vmimage.publisher
-  vm_os_image_offer                   = local.azure_vmimage.offer
-  vm_os_image_sku                     = local.azure_vmimage.sku
-  vm_os_image_version                 = local.azure_vmimage.version
+  vm_os_image_spec                    = local.azure_vmimage
 }

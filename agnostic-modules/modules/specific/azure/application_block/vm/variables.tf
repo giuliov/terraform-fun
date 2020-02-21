@@ -35,18 +35,11 @@ variable vm_os_linux {
   type = bool
 }
 
-variable vm_os_image_publisher {
-  type = string
-}
-
-variable vm_os_image_offer {
-  type = string
-}
-
-variable vm_os_image_sku {
-  type = string
-}
-
-variable vm_os_image_version {
-  type = string
+variable vm_os_image_spec {
+  type = object({
+    publisher = string
+    offer     = string
+    sku       = string
+    version   = string
+  })
 }

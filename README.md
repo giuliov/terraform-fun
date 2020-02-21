@@ -4,15 +4,18 @@ Hacks, notes and experiments with HashiCorp Terraform
 
 ## Samples
 
-- `hello-world`: Creates a Resource Group
-- `vm-demo`: Creates a Windows VM and configures IIS
-- `appservice-to-vm`: An App Services using an existing database in a VM
-- `tshirt-sizes`: terraform 0.11 style for parametrizing from a table
-- `dsc-automation-vm`: use Azure Automation to install a VSTS Agent
-- `carving-subnets`: using `cidrsubnet` and `cidrhost` to statically assign IP addresses
-- `convey-params`: pushing parameters from Terraform to Powershell via `azurerm_virtual_machine_extension`
-- `uploader`: script to upload files to Azure Storage
-- `zipping`: how to use `archive_file` to create a local Zip
+- `hello-world`: Creates an Azure Resource Group.
+- `vm-demo`: Creates a Windows VM in Azure and configures IIS.
+- `appservice-to-vm`: An App Services using an existing database in a VM.
+- `tshirt-sizes`: terraform 0.11 style for parametrizing from a table.
+- `dsc-automation-vm`: use Azure Automation to install a VSTS Agent.
+- `carving-subnets`: using `cidrsubnet` and `cidrhost` to statically assign IP addresses.
+- `convey-params`: pushing parameters from Terraform to Powershell via `azurerm_virtual_machine_extension`.
+- `uploader`: script to upload files to Azure Storage.
+- `zipping`: how to use `archive_file` to create a local Zip.
+- `invoke-arm`: use of `azurerm_template_deployment`.
+- `appservice-to-vm`: complex Azure example that shows an App Service using a SQL Server instance hosted in a VM (scenario of green field application using a legacy database). 
+- `agnostic-modules` Cloud agnostic code: how to abstract and decouple from Terraform providers.
 
 ## Files not in repo
 

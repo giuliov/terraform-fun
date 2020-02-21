@@ -47,24 +47,24 @@ locals {
 
   aws_vmimages = {
     "windows" = {
-      "2019" = {
+      "server-2019" = {
         name_regex  = "^.*Windows.*"
         name_filter = "*Windows_Server-2019-English-Core-Base*"
-        owner       = "099720109477" # Canonical
+        owner       = "801119661308" # Amazon
       }
     }
     "linux" = {
       "ubuntu-18.04" = {
         name_regex  = "^.*ubuntu.*"
         name_filter = "*ubuntu*18.04-amd64-server-*"
-        owner       = "801119661308" # Amazon
+        owner       = "099720109477" # Canonical
       }
     }
   }
 
   azure_vmimages = {
     "windows" = {
-      "2019" = {
+      "server-2019" = {
         publisher = "MicrosoftWindowsServer"
         offer     = "WindowsServer"
         sku       = "2019-Datacenter-smalldisk"

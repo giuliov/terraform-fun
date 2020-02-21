@@ -23,15 +23,11 @@ variable vm_os_linux {
   type = bool
 }
 
-variable vmimage_name_regex {
-  type = string
-}
-
-variable vmimage_name_filter {
-  type = string
-}
-
-variable vmimage_owner {
-  type = string
+variable vm_os_image_spec {
+  type = object({
+    name_regex  = string
+    name_filter = string
+    owner       = string
+  })
 }
 
