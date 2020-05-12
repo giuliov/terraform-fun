@@ -63,6 +63,14 @@ locals {
   }
 
   azure_vmimages = {
+    "linux" = {
+      "ubuntu-18-lts" = {
+        publisher = "Canonical"
+        offer     = "UbuntuServer"
+        sku       = "18.04-LTS"
+        version   = "latest"
+      }
+    }
     "windows" = {
       "server-2019" = {
         publisher = "MicrosoftWindowsServer"
