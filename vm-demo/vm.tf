@@ -2,19 +2,19 @@
 
 resource "azurerm_network_interface" "vm_demo" {
   name                = "${var.env_name}-nic"
-  location            = "${azurerm_resource_group.vm_demo.location}"
-  resource_group_name = "${azurerm_resource_group.vm_demo.name}"
+  location            = azurerm_resource_group.vm_demo.location
+  resource_group_name = azurerm_resource_group.vm_demo.name
 
   ip_configuration {
     name                          = "ip-config"
-    subnet_id                     = "${azurerm_subnet.vm_demo.id}"
+    subnet_id                     = azurerm_subnet.vm_demo.id
     private_ip_address_allocation = "static"
-    private_ip_address            = "${cidrhost(azurerm_subnet.vm_demo.address_prefix, 5)}"
-    public_ip_address_id          = "${azurerm_public_ip.vm_demo.id}"
+    private_ip_address            = cidrhost(azurerm_subnet.vm_demo.address_prefix, 5)
+    public_ip_address_id          = azurerm_public_ip.vm_demo.id
   }
 
   tags = {
-    environment = "${var.env_name}"
+    environment = var.env_name
   }
 }
 
@@ -30,9 +30,9 @@ data "azurerm_key_vault_secret" "vm_demo" {
 
 resource "azurerm_virtual_machine" "vm_demo" {
   name                             = "${var.env_name}-vm"
-  location                         = "${azurerm_resource_group.vm_demo.location}"
-  resource_group_name              = "${azurerm_resource_group.vm_demo.name}"
-  network_interface_ids            = ["${azurerm_network_interface.vm_demo.id}"]
+  location                         = azurerm_resource_group.vm_demo.location
+  resource_group_name              = azurerm_resource_group.vm_demo.name
+  network_interface_ids            = [azurerm_network_interface.vm_demo.id]
   vm_size                          = var.vm_size
   delete_os_disk_on_termination    = true # CAVEAT: this is ok for demoing, a VERY BAD idea otherwise
   delete_data_disks_on_termination = true # CAVEAT: this is ok for demoing, a VERY BAD idea otherwise
@@ -59,8 +59,8 @@ resource "azurerm_virtual_machine" "vm_demo" {
 
   os_profile {
     computer_name  = "TF-DEMOVM"
-    admin_username = "${var.vm_admin_username}"
-    admin_password = "${data.azurerm_key_vault_secret.vm_demo.value}"
+    admin_username = var.vm_admin_username
+    admin_password = data.azurerm_key_vault_secret.vm_demo.value
   }
 
   os_profile_windows_config {
@@ -69,7 +69,7 @@ resource "azurerm_virtual_machine" "vm_demo" {
   }
 
   tags = {
-    environment = "${var.env_name}"
+    environment = var.env_name
   }
 }
 

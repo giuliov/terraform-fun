@@ -4,9 +4,7 @@
 
 resource "azurerm_virtual_machine_extension" "vm_demo_dsc" {
   name                       = "${var.env_name}-vm-dscext"
-  location                   = "${azurerm_resource_group.vm_demo.location}"
-  resource_group_name        = "${azurerm_resource_group.vm_demo.name}"
-  virtual_machine_name       = "${azurerm_virtual_machine.vm_demo.name}"
+  virtual_machine_id         = azurerm_virtual_machine.vm_demo.id
   publisher                  = "Microsoft.Powershell"
   type                       = "DSC"
   type_handler_version       = "2.73"
@@ -28,7 +26,7 @@ resource "azurerm_virtual_machine_extension" "vm_demo_dsc" {
 SETTINGS
 
   tags = {
-    environment = "${var.env_name}"
+    environment = var.env_name
   }
 }
 
