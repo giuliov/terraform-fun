@@ -1,25 +1,3 @@
-terraform {
-  required_version = "~> 0.13"
-}
-
-provider "aws" {
-  alias  = "ie"
-  region = "eu-west-1"
-}
-
-provider "aws" {
-  alias  = "gb"
-  region = "eu-west-2"
-}
-
-provider azurerm {
-  features {
-    virtual_machine {
-      delete_os_disk_on_deletion = true # good for demos, not for production
-    }
-  }
-}
-
 locals {
   validate_arguments_platform    = (var.platform == "vm" && var.vm_platform != null) || (var.platform == "k8s" && var.k8s_platform != null) ? null : file("ERROR: Invalid platform argument.")
   validate_arguments_vm_platform = var.vm_platform != null && var.vm_platform.os == "windows" ? null : (var.vm_platform.os == "linux" ? null : file("ERROR: Invalid vm_platform argument."))
