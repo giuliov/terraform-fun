@@ -34,9 +34,7 @@ resource azurerm_virtual_machine vm {
   resource_group_name   = data.azurerm_resource_group.rg.name
   location              = data.azurerm_resource_group.rg.location
   network_interface_ids = [azurerm_network_interface.default_nic.id]
-
-  # TODO
-  vm_size = "Standard_DS2_v2"
+  vm_size               = var.vm_perf_class
 
   storage_image_reference {
     publisher = var.vm_os_image_spec.publisher

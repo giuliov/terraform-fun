@@ -2,10 +2,10 @@ module application_123_aws {
   source = "./modules/agnostic/application_block"
 
   quality_of_service = {
-    performance     = 1
-    security        = 3
-    load            = 5
-    confidentiality = 3
+    performance     = 5
+    security        = 3 # not used
+    load            = 5 # not used
+    confidentiality = 3 # not used
   }
 
   location = {
@@ -33,10 +33,10 @@ module application_124_aws {
   source = "./modules/agnostic/application_block"
 
   quality_of_service = {
-    performance     = 1
-    security        = 3
-    load            = 5
-    confidentiality = 3
+    performance     = 4
+    security        = 3 # not used
+    load            = 5 # not used
+    confidentiality = 3 # not used
   }
 
   location = {
@@ -65,10 +65,10 @@ module application_123_azure {
   source = "./modules/agnostic/application_block"
 
   quality_of_service = {
-    performance     = 1
-    security        = 3
-    load            = 5
-    confidentiality = 3
+    performance     = 2
+    security        = 3 # not used
+    load            = 5 # not used
+    confidentiality = 3 # not used
   }
 
   location = {

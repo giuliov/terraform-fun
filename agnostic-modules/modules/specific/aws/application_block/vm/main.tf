@@ -42,7 +42,7 @@ data aws_ami windows {
 
 resource aws_instance vm {
   ami                         = var.vm_os_windows ? data.aws_ami.windows.id : (var.vm_os_linux ? data.aws_ami.linux.id : "ERROR: invalid OS")
-  instance_type               = "t2.micro"
+  instance_type               = var.vm_perf_class
   subnet_id                   = data.aws_subnet.app_subnet.id
   vpc_security_group_ids      = [] #TODO
   associate_public_ip_address = false

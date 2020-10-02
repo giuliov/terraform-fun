@@ -1,18 +1,13 @@
 locals {
-  validate_arguments_platform    = (var.platform == "vm" && var.vm_platform != null) || (var.platform == "k8s" && var.k8s_platform != null) ? null : file("ERROR: Invalid platform argument.")
-  validate_arguments_vm_platform = var.vm_platform != null && var.vm_platform.os == "windows" ? null : (var.vm_platform.os == "linux" ? null : file("ERROR: Invalid vm_platform argument."))
-  # etc. etc. etc.
-}
-
-
-locals {
   aws_main_region = local.aws_geographies[var.location.geography].primary
   vm_os_windows   = var.vm_platform.os == "windows"
   vm_os_linux     = var.vm_platform.os == "linux"
   aws_section     = local.aws_sections[var.location.section]
   aws_vmimage     = local.aws_vmimages[var.vm_platform.os][var.vm_platform.os_version]
+  aws_vmperf      = local.aws_instance_types[var.quality_of_service.performance - 1]
   azure_section   = local.azure_sections[var.location.section]
   azure_vmimage   = local.azure_vmimages[var.vm_platform.os][var.vm_platform.os_version]
+  azure_vmperf    = local.azure_vm_sizes[var.quality_of_service.performance - 1]
 }
 
 
@@ -26,6 +21,7 @@ module aws_ie {
   vm_os_windows    = local.vm_os_windows
   vm_os_linux      = local.vm_os_linux
   vm_os_image_spec = local.aws_vmimage
+  vm_perf_class    = local.aws_vmperf
   tags             = var.tags
 
   providers = {
@@ -45,6 +41,7 @@ module aws_gb {
   vm_os_windows    = local.vm_os_windows
   vm_os_linux      = local.vm_os_linux
   vm_os_image_spec = local.aws_vmimage
+  vm_perf_class    = local.aws_vmperf
   tags             = var.tags
 
   providers = {
@@ -67,6 +64,7 @@ module azure {
   vm_os_windows                       = local.vm_os_windows
   vm_os_linux                         = local.vm_os_linux
   vm_os_image_spec                    = local.azure_vmimage
+  vm_perf_class                       = local.azure_vmperf
   tags                                = var.tags
 
   providers = {}

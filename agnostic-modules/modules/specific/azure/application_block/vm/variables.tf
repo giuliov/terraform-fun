@@ -39,6 +39,10 @@ variable vm_os_image_spec {
   })
 }
 
+variable vm_perf_class {
+  type = string
+}
+
 variable tags {
   type = map(string)
 }
