@@ -29,12 +29,12 @@ locals {
 
 locals {
   aws_main_region = local.aws_geographies[var.location.geography].primary
-  vm_os_windows = var.vm_platform.os == "windows"
-  vm_os_linux   = var.vm_platform.os == "linux"
-  aws_section   = local.aws_sections[var.location.section]
-  aws_vmimage   = local.aws_vmimages[var.vm_platform.os][var.vm_platform.os_version]
-  azure_section = local.azure_sections[var.location.section]
-  azure_vmimage = local.azure_vmimages[var.vm_platform.os][var.vm_platform.os_version]
+  vm_os_windows   = var.vm_platform.os == "windows"
+  vm_os_linux     = var.vm_platform.os == "linux"
+  aws_section     = local.aws_sections[var.location.section]
+  aws_vmimage     = local.aws_vmimages[var.vm_platform.os][var.vm_platform.os_version]
+  azure_section   = local.azure_sections[var.location.section]
+  azure_vmimage   = local.azure_vmimages[var.vm_platform.os][var.vm_platform.os_version]
 }
 
 
