@@ -3,7 +3,13 @@ terraform {
 }
 
 provider "aws" {
-  #region = var.main_region
+  alias  = "ie"
+  region = "eu-west-1"
+}
+
+provider "aws" {
+  alias  = "gb"
+  region = "eu-west-2"
 }
 
 provider azurerm {
@@ -22,6 +28,7 @@ locals {
 
 
 locals {
+  aws_main_region = local.aws_geographies[var.location.geography].primary
   vm_os_windows = var.vm_platform.os == "windows"
   vm_os_linux   = var.vm_platform.os == "linux"
   aws_section   = local.aws_sections[var.location.section]
@@ -31,11 +38,11 @@ locals {
 }
 
 
-module aws {
+module aws_ie {
   source = "../../specific/aws/application_block/vm"
-  count  = var.location.cloud == "aws" && var.platform == "vm" ? 1 : 0
+  count  = var.location.cloud == "aws" && var.platform == "vm" && var.location.geography == "ireland" ? 1 : 0
 
-  main_region      = local.aws_geographies[var.location.geography].primary
+  main_region      = local.aws_main_region
   subnet_name      = local.aws_section.subnet_name
   vm_name          = var.name
   vm_os_windows    = local.vm_os_windows
@@ -43,8 +50,31 @@ module aws {
   vm_os_image_spec = local.aws_vmimage
   tags             = var.tags
 
-  providers = {}
+  providers = {
+    # HACK
+    aws = aws.ie
+  }
 }
+
+
+module aws_gb {
+  source = "../../specific/aws/application_block/vm"
+  count  = var.location.cloud == "aws" && var.platform == "vm" && var.location.geography == "england" ? 1 : 0
+
+  main_region      = local.aws_main_region
+  subnet_name      = local.aws_section.subnet_name
+  vm_name          = var.name
+  vm_os_windows    = local.vm_os_windows
+  vm_os_linux      = local.vm_os_linux
+  vm_os_image_spec = local.aws_vmimage
+  tags             = var.tags
+
+  providers = {
+    # HACK
+    aws = aws.gb
+  }
+}
+
 
 module azure {
   source = "../../specific/azure/application_block/vm"

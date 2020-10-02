@@ -4,11 +4,18 @@ locals {
     "ireland" = {
       primary = "eu-west-1"
     }
+    "england" = {
+      primary = "eu-west-2"
+    }
   }
 
   azure_geographies = {
     "ireland" = {
-      primary = "northeurope"
+      primary   = "northeurope"
+      secondary = "westeurope"
+    }
+    "england" = {
+      primary = "uksouth"
     }
   }
 

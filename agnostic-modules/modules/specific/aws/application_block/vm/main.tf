@@ -60,6 +60,7 @@ resource aws_instance vm {
 
   tags = merge({
     Name   = "${var.vm_name}-vm"
+    Region = var.main_region
     Env    = lower(terraform.workspace)
     OSType = var.vm_os_windows ? "windows" : "linux"
     },

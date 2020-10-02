@@ -29,6 +29,37 @@ module application_123_aws {
 }
 
 
+module application_124_aws {
+  source = "./modules/agnostic/application_block"
+
+  quality_of_service = {
+    performance     = 1
+    security        = 3
+    load            = 5
+    confidentiality = 3
+  }
+
+  location = {
+    cloud     = "aws"
+    geography = "england"
+    section   = "app-group-gamma"
+  }
+
+  name = "app-124-linux"
+
+  platform = "vm"
+  vm_platform = {
+    os         = "linux"
+    os_version = "ubuntu-18.04"
+  }
+
+  tags = {
+    owner       = "john.doe@example.org"
+    cost_center = "ABC124"
+  }
+}
+
+
 
 module application_123_azure {
   source = "./modules/agnostic/application_block"
