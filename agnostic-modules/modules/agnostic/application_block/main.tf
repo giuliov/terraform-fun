@@ -1,5 +1,17 @@
 terraform {
-  required_version = "~> 0.12"
+  required_version = "~> 0.13"
+}
+
+provider "aws" {
+  #region = var.main_region
+}
+
+provider azurerm {
+  features {
+    virtual_machine {
+      delete_os_disk_on_deletion = true # good for demos, not for production
+    }
+  }
 }
 
 locals {
@@ -21,23 +33,24 @@ locals {
 
 module aws {
   source = "../../specific/aws/application_block/vm"
-  # HACK until we get full support
-  count_ = var.location.cloud == "aws" && var.platform == "vm" ? 1 : 0
+  count  = var.location.cloud == "aws" && var.platform == "vm" ? 1 : 0
 
-  main_region      = local.aws_geographies[var.location.geographies[0]].primary
+  main_region      = local.aws_geographies[var.location.geography].primary
   subnet_name      = local.aws_section.subnet_name
   vm_name          = var.name
   vm_os_windows    = local.vm_os_windows
   vm_os_linux      = local.vm_os_linux
   vm_os_image_spec = local.aws_vmimage
+  tags             = var.tags
+
+  providers = {}
 }
 
 module azure {
   source = "../../specific/azure/application_block/vm"
-  # HACK until we get full support
-  count_ = var.location.cloud == "azure" && var.platform == "vm" ? 1 : 0
+  count  = var.location.cloud == "azure" && var.platform == "vm" ? 1 : 0
 
-  location                            = local.azure_geographies[var.location.geographies[0]].primary
+  location                            = local.azure_geographies[var.location.geography].primary
   resource_group_name                 = local.azure_section.app_resource_group_name
   virtual_network_resource_group_name = local.azure_section.vnet_resource_group_name
   virtual_network_name                = local.azure_section.virtual_network_name
@@ -46,4 +59,7 @@ module azure {
   vm_os_windows                       = local.vm_os_windows
   vm_os_linux                         = local.vm_os_linux
   vm_os_image_spec                    = local.azure_vmimage
+  tags                                = var.tags
+
+  providers = {}
 }

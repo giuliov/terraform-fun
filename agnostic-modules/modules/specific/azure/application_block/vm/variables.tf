@@ -1,8 +1,3 @@
-variable count_ {
-  type    = number
-  default = 0
-}
-
 variable location {
   type = string
 }
@@ -42,4 +37,8 @@ variable vm_os_image_spec {
     sku       = string
     version   = string
   })
+}
+
+variable tags {
+  type = map(string)
 }

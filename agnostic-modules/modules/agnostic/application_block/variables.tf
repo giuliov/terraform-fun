@@ -1,13 +1,12 @@
-
 variable location {
   type = object({
-    cloud       = string,
-    geographies = list(string),
-    section     = string
+    cloud     = string,
+    geography = string,
+    section   = string
   })
 }
 
-variable scale {
+variable quality_of_service {
   type = object({
     performance     = number,
     security        = number,
