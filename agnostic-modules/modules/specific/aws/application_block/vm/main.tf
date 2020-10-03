@@ -15,8 +15,18 @@ data aws_ami linux {
   }
 
   filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+
+  filter {
     name   = "virtualization-type"
     values = ["hvm"]
+  }
+
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
   }
 
   owners = [var.vm_os_image_spec.owner]
@@ -32,10 +42,20 @@ data aws_ami windows {
   }
 
   filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+
+  filter {
     name   = "virtualization-type"
     values = ["hvm"]
   }
 
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
+  }
+  
   owners = [var.vm_os_image_spec.owner]
 }
 

@@ -11,9 +11,9 @@ locals {
 }
 
 
-module aws_ie {
+module aws {
   source = "../../specific/aws/application_block/vm"
-  count  = var.location.cloud == "aws" && var.platform == "vm" && var.location.geography == "ireland" ? 1 : 0
+  count  = var.location.cloud == "aws" && var.platform == "vm" ? 1 : 0
 
   main_region      = local.aws_main_region
   subnet_name      = local.aws_section.subnet_name
@@ -24,30 +24,7 @@ module aws_ie {
   vm_perf_class    = local.aws_vmperf
   tags             = var.tags
 
-  providers = {
-    # HACK
-    aws = aws.ie
-  }
-}
-
-
-module aws_gb {
-  source = "../../specific/aws/application_block/vm"
-  count  = var.location.cloud == "aws" && var.platform == "vm" && var.location.geography == "england" ? 1 : 0
-
-  main_region      = local.aws_main_region
-  subnet_name      = local.aws_section.subnet_name
-  vm_name          = var.name
-  vm_os_windows    = local.vm_os_windows
-  vm_os_linux      = local.vm_os_linux
-  vm_os_image_spec = local.aws_vmimage
-  vm_perf_class    = local.aws_vmperf
-  tags             = var.tags
-
-  providers = {
-    # HACK
-    aws = aws.gb
-  }
+  providers = {}
 }
 
 
