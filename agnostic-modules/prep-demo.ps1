@@ -1,3 +1,5 @@
+# this script creates the resources required for the demo
+
 az --version
 terraform --version
 
