@@ -4,11 +4,18 @@ locals {
     "ireland" = {
       primary = "eu-west-1"
     }
+    "england" = {
+      primary = "eu-west-2"
+    }
   }
 
   azure_geographies = {
     "ireland" = {
-      primary = "northeurope"
+      primary   = "northeurope"
+      secondary = "westeurope"
+    }
+    "england" = {
+      primary = "uksouth"
     }
   }
 
@@ -63,14 +70,6 @@ locals {
   }
 
   azure_vmimages = {
-    "linux" = {
-      "ubuntu-18-lts" = {
-        publisher = "Canonical"
-        offer     = "UbuntuServer"
-        sku       = "18.04-LTS"
-        version   = "latest"
-      }
-    }
     "windows" = {
       "server-2019" = {
         publisher = "MicrosoftWindowsServer"
@@ -80,6 +79,12 @@ locals {
       }
     }
     "linux" = {
+      "ubuntu-18-lts" = {
+        publisher = "Canonical"
+        offer     = "UbuntuServer"
+        sku       = "18.04-LTS"
+        version   = "latest"
+      }
       "ubuntu-18.04" = {
         publisher = "Canonical"
         offer     = "UbuntuServer"
@@ -88,4 +93,20 @@ locals {
       }
     }
   }
+
+  aws_instance_types = [
+    "t3.micro", # demo values
+    "t3.micro", # demo values
+    "t3.micro", # demo values
+    "t3.micro",
+    "t2.micro"
+  ]
+
+  azure_vm_sizes = [
+    "Standard_D64s_v4",
+    "Standard_D16s_v4",
+    "Standard_D4s_v4",
+    "Standard_DS2_v2",
+    "Standard_B1ms"
+  ]
 }

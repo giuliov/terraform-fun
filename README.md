@@ -47,3 +47,5 @@ Service Principal   | Resource            | Role / Access policy
 `terraform-reader`  | `pro-demo` KeyVault | Get & List Secrets
 
 The latter can be shared "freely", the former can do damage (planning is key).
+
+Some example, notably _agnostic-modules_, requires additional accounts and permissions.

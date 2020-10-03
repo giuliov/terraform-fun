@@ -1,8 +1,3 @@
-variable count_ {
-  type    = number
-  default = 0
-}
-
 variable main_region {
   type = string
 }
@@ -31,3 +26,10 @@ variable vm_os_image_spec {
   })
 }
 
+variable vm_perf_class {
+  type = string
+}
+
+variable tags {
+  type = map(string)
+}

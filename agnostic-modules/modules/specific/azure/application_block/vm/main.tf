@@ -1,12 +1,3 @@
-terraform {
-  required_version = "~> 0.12"
-}
-
-provider azurerm {
-  version = "~> 1.33"
-}
-
-
 data azurerm_resource_group rg {
   name = var.resource_group_name
 }
@@ -26,8 +17,6 @@ locals {
 
 
 resource azurerm_network_interface default_nic {
-  count = var.count_
-
   name                = "${var.vm_name}-nic"
   resource_group_name = data.azurerm_resource_group.rg.name
   location            = data.azurerm_resource_group.rg.location
@@ -37,18 +26,15 @@ resource azurerm_network_interface default_nic {
     # TODO
     private_ip_address_allocation = "dynamic"
   }
+  tags = var.tags
 }
 
 resource azurerm_virtual_machine vm {
-  count = var.count_
-
   name                  = "${var.vm_name}-vm"
   resource_group_name   = data.azurerm_resource_group.rg.name
   location              = data.azurerm_resource_group.rg.location
-  network_interface_ids = [azurerm_network_interface.default_nic[count.index].id]
-
-  # TODO
-  vm_size = "Standard_DS2_v2"
+  network_interface_ids = [azurerm_network_interface.default_nic.id]
+  vm_size               = var.vm_perf_class
 
   storage_image_reference {
     publisher = var.vm_os_image_spec.publisher
@@ -85,4 +71,10 @@ resource azurerm_virtual_machine vm {
       disable_password_authentication = false
     }
   }
+
+  tags = merge({
+    Env    = lower(terraform.workspace)
+    OSType = var.vm_os_windows ? "windows" : "linux"
+    },
+  var.tags)
 }
